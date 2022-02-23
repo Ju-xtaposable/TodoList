@@ -1,0 +1,56 @@
+@model TodoList.Models.Tache
+
+@{
+    List<Categorie> CategoriesList = null;
+    CategoriesList = ViewBag.CategoriesList;
+    var CategoriesListItems = CategoriesList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
+
+    List<Projet> ProjetsList = null;
+    ProjetsList = ViewBag.ProjetsList;
+    var ProjetsListItems = ProjetsList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
+}
+
+
+<h4>Tache</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="CategorieId" asp-items="CategoriesListItems"></select>
+            </div>
+            <div class="form-group">
+                <select asp-for="ProjetId" asp-items="ProjetsListItems"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreation" class="control-label"></label>
+                <input asp-for="DateCreation" class="form-control" />
+                <span asp-validation-for="DateCreation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCible" class="control-label"></label>
+                <input asp-for="DateCible" class="form-control" />
+                <span asp-validation-for="DateCible" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
