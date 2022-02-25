@@ -12,11 +12,15 @@ $(document).ready(function() {
     e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div class="input-group mb-3"><select asp-items="BadgesListItems" name="badges[]"></select><div class="input-group-append"><button class="btn btn-outline-danger remove_field" type="button">Supprimer</button></div></div>'); //add input box
+            //$(wrapper).append('<div class="input-group mb-3"><select asp-items="BadgesListItems" name="badges[]"></select><div class="input-group-append"><button class="btn btn-outline-danger remove_field" type="button">Supprimer</button></div></div>'); //add input box
+            const node = document.getElementById("selectModel");
+            const clone = node.cloneNode(true);
+            $(clone).append('<button class="btn btn-outline-danger remove_field" type="button">Supprimer</button>')
+            $(wrapper).append(clone);
         }
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent('div').parent('div').remove(); x--;
+        e.preventDefault();$(this).parent('div').remove(); x--;
     })
 });
