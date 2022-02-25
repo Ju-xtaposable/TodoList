@@ -10,6 +10,7 @@
         {
             <div class="col">
                 <h2>@categorie.Name</h2>
+                <p>@categorie.Taches.Count/@categorie.MaxTaches</p>
                 <div class="list-group">
                     @foreach (Tache tache in categorie.Taches)
                     {

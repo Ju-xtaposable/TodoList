@@ -33,7 +33,12 @@
             <div class="form-group col-md-4">
                 <div class="input_fields_wrap ">
                     <button class="btn btn-primary add_field_button">Ajouter un badges</button>
-                    <select class="mb-3" asp-items="BadgesListItems" name="badges[]"></select>
+                    <div id="selectModel" class="input-group mb-3">
+                        <div class="input-group-append">
+                            <select asp-items="BadgesListItems" name="badges[]"></select>
+                            @* <button class="btn btn-outline-danger remove_field" type="button">Supprimer</button> *@
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">

@@ -30,6 +30,33 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "taches",
+    pattern: "Mes-Taches",
+    defaults: new
+    {
+        controller = "Tache",
+        action = "Index"
+    });
+
+app.MapControllerRoute(
+    name: "notes",
+    pattern: "Mes-Notes",
+    defaults: new
+    {
+        controller = "Note",
+        action = "Index"
+    });
+
+app.MapControllerRoute(
+    name: "events",
+    pattern: "Mes-Events",
+    defaults: new
+    {
+        controller = "Event",
+        action = "Index"
+    });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
