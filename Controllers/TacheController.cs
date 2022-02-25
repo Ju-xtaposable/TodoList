@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TodoList.DataLayers;
 using TodoList.Models;
 
 namespace TodoList.Controllers
@@ -15,16 +16,19 @@ namespace TodoList.Controllers
     {
         private readonly ILogger<TacheController> _logger;
         private readonly DefaultContext _context = null;
+        private readonly CategorieDataLayer _categorieDataLayer = null;
 
-        public TacheController(ILogger<TacheController> logger, DefaultContext context)
+        public TacheController(ILogger<TacheController> logger, DefaultContext context, CategorieDataLayer categorieDataLayer)
         {
             _logger = logger;
             _context = context;
+            _categorieDataLayer = categorieDataLayer;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Categorie> categories = _categorieDataLayer.GetCategories();
+            return View(categories);
         }
 
         public IActionResult Create()
@@ -54,7 +58,7 @@ namespace TodoList.Controllers
             return result;
         }
 
-        public IActionResult Edit(int id, int[] badges)
+        public IActionResult Edit(int id)
         {
             Tache tache = null;
             SetCategoriesList();
@@ -64,8 +68,15 @@ namespace TodoList.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Tache tache)
+        public IActionResult Edit(Tache tache, int[] badges)
         {
+            tache.Badges.Clear();
+            foreach (int badgeId in badges)
+            {
+                Badge badge = _context.Badges.First( badge => badge.Id == badgeId);
+                tache.Badges.Add(badge);
+            }
+
             _context.Taches.Update(tache);
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
