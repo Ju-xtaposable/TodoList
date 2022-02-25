@@ -3,29 +3,4 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-    <a class="btn btn-primary" asp-controller="Tache" asp-action="Create">Nouvelles Tache</a>
-    <div class="row">
-        @foreach (Categorie categorie in Model)
-        {
-            <div class="col">
-                <h2>@categorie.Name</h2>
-                <div class="list-group">
-                    @foreach (Tache tache in categorie.Taches)
-                    {
-                        <a asp-controller="Tache" asp-action="Edit" asp-route-id="@tache.Id" class="list-group-item list-group-item-action" aria-current="true">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">@tache.Name</h5>
-                                @foreach (Badge badge in tache.Badges)
-                                {
-                                    <span class="badge bg-primary rounded-pill">@badge.Name</span>
-                                }
-                            </div>
-                            <small>@tache.DateCible</small>
-                        </a>
-                    }
-                </div>
-            </div>
-        }
-    </div>
-</div>
+<h1>Tableu de bord</h1>
