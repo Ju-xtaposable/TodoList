@@ -34,7 +34,7 @@ namespace TodoList.Controllers
         public IActionResult Create()
         {
             SetCategoriesList();
-            SetProjetsList();
+            SetBadgessList();
             return View();
         }
 
@@ -62,7 +62,7 @@ namespace TodoList.Controllers
         {
             Tache tache = null;
             SetCategoriesList();
-            SetProjetsList();
+            SetBadgessList();
             tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == id );
             return View(tache);
         }
@@ -87,9 +87,9 @@ namespace TodoList.Controllers
             ViewBag.CategoriesList = _context.Categories.ToList();
         }
 
-        private void SetProjetsList()
+        private void SetBadgessList()
         {
-            ViewBag.badgesList = _context.Badges.ToList();
+            ViewBag.badgesList = _context.Badges.OrderBy(badge => badge.Numero).ToList();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
