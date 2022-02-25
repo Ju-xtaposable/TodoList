@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TodoList.Models;
 
@@ -34,9 +35,16 @@ namespace TodoList.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Tache tache)
+        public IActionResult Create(Tache tache, int[] badges) 
         {
             IActionResult result = View(tache);
+
+            foreach (int badgeId in badges)
+            {
+                Badge badge = _context.Badges.First( badge => badge.Id == badgeId);
+                tache.Badges.Add(badge);
+            }
+
             if ( ModelState.IsValid )
             {
                 _context.Taches.Add(tache);
@@ -46,12 +54,12 @@ namespace TodoList.Controllers
             return result;
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id, int[] badges)
         {
             Tache tache = null;
             SetCategoriesList();
             SetProjetsList();
-            tache = _context.Taches.First( tache => tache.Id == id );
+            tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == id );
             return View(tache);
         }
 
@@ -70,7 +78,7 @@ namespace TodoList.Controllers
 
         private void SetProjetsList()
         {
-            ViewBag.projetsList = _context.Badges.ToList();
+            ViewBag.badgesList = _context.Badges.ToList();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
