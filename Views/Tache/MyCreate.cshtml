@@ -1,23 +1,29 @@
 @model TodoList.Models.Tache
 
 @{
-    List<Categorie> CategoriesList = null;
-    CategoriesList = ViewBag.CategoriesList;
-    var CategoriesListItems = CategoriesList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
-
-    List<Badge> ProjetsList = null;
-    ProjetsList = ViewBag.ProjetsList;
-    var ProjetsListItems = ProjetsList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
+    Layout = null;
 }
 
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyCreate</title>
+</head>
+<body>
 
 <h4>Tache</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="MyCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -29,11 +35,10 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="CategorieId" asp-items="CategoriesListItems"></select>
+                <label asp-for="CategorieId" class="control-label"></label>
+                <input asp-for="CategorieId" class="form-control" />
+                <span asp-validation-for="CategorieId" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <select asp-for="ProjetId" asp-items="ProjetsListItems"></select>
-            </div> *@
             <div class="form-group">
                 <label asp-for="DateDebut" class="control-label"></label>
                 <input asp-for="DateDebut" class="form-control" />
@@ -44,13 +49,21 @@
                 <input asp-for="DateCible" class="form-control" />
                 <span asp-validation-for="DateCible" class="text-danger"></span>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Archivée" /> @Html.DisplayNameFor(model => model.Archivée)
+                </label>
+            </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a>
 </div>
+
+</body>
+</html>

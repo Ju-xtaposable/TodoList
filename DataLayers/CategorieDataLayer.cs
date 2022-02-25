@@ -18,7 +18,10 @@ namespace TodoList.DataLayers
 
         public List<Categorie> GetCategories()
         {
-            return _context.Categories.Include( categorie => categorie.Taches).ThenInclude( tache => tache.projet).ToList();
+            return _context.Categories
+            .Include( categorie => categorie.Taches)
+            .ThenInclude( tache => tache.Badges)
+            .ToList();
         }
     }
 }

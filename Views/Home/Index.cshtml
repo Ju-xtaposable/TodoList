@@ -16,7 +16,10 @@
                         <a asp-controller="Tache" asp-action="Edit" asp-route-id="@tache.Id" class="list-group-item list-group-item-action" aria-current="true">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">@tache.Name</h5>
-                                <span class="badge bg-primary rounded-pill">@tache.projet.Name</span>
+                                @foreach (Badge badge in tache.Badges)
+                                {
+                                    <span class="badge bg-primary rounded-pill">@badge.Name</span>
+                                }
                             </div>
                             <small>@tache.DateCible</small>
                         </a>

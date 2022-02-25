@@ -17,11 +17,10 @@ namespace TodoList.Models
         public string Description { get; set; }
         [ForeignKey("Categorie")]
         public int CategorieId { get; set; }
-        [ForeignKey("Projet")]
-        public int ProjetId { get; set; }
-        public DateTime DateCreation { get; set; }
+        public DateTime DateDebut { get; set; }
         public DateTime DateCible { get; set; }
+        public bool Archivée { get; set; }
         public virtual Categorie? Categorie { get; set; }
-        public virtual Projet? projet { get; set; }
+        public virtual List<Badge>? Badges { get; set; }
     }
 }

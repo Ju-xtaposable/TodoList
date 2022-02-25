@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace TodoList.Models
 {
-    [Table("Projet")]
-    public class Projet
+    [Table("Badge")]
+    public class Badge
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public  virtual List<Tache> Taches { get; set; }
     }
 }

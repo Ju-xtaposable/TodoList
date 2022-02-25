@@ -13,8 +13,16 @@ namespace TodoList.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tache>()
+                .HasMany(p => p.Badges)
+                .WithMany(p => p.Taches)
+                .UsingEntity(j => j.ToTable("TacheBadge"));
+        }
+
         public DbSet<Tache> Taches { get; set; }
         public DbSet<Categorie> Categories { get; set; }
-        public DbSet<Projet> Projets { get; set; }
+        public DbSet<Badge> Badges { get; set; }
     }
 }

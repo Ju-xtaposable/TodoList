@@ -70,7 +70,7 @@ namespace TodoList.Controllers
 
         private void SetProjetsList()
         {
-            ViewBag.projetsList = _context.Projets.ToList();
+            ViewBag.projetsList = _context.Badges.ToList();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

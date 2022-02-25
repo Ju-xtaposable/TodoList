@@ -15,7 +15,37 @@ namespace TodoList.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.0-preview.1.22076.6");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
+
+            modelBuilder.Entity("BadgeTache", b =>
+                {
+                    b.Property<int>("BadgesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TachesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BadgesId", "TachesId");
+
+                    b.HasIndex("TachesId");
+
+                    b.ToTable("TacheBadge", (string)null);
+                });
+
+            modelBuilder.Entity("TodoList.Models.Badge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Badge");
+                });
 
             modelBuilder.Entity("TodoList.Models.Categorie", b =>
                 {
@@ -35,25 +65,13 @@ namespace TodoList.Migrations
                     b.ToTable("Categorie");
                 });
 
-            modelBuilder.Entity("TodoList.Models.Projet", b =>
+            modelBuilder.Entity("TodoList.Models.Tache", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Projet");
-                });
-
-            modelBuilder.Entity("TodoList.Models.Tache", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<bool>("Archivée")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CategorieId")
@@ -62,7 +80,7 @@ namespace TodoList.Migrations
                     b.Property<DateTime>("DateCible")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateCreation")
+                    b.Property<DateTime>("DateDebut")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -73,16 +91,26 @@ namespace TodoList.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProjetId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieId");
 
-                    b.HasIndex("ProjetId");
-
                     b.ToTable("Tache");
+                });
+
+            modelBuilder.Entity("BadgeTache", b =>
+                {
+                    b.HasOne("TodoList.Models.Badge", null)
+                        .WithMany()
+                        .HasForeignKey("BadgesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TodoList.Models.Tache", null)
+                        .WithMany()
+                        .HasForeignKey("TachesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TodoList.Models.Tache", b =>
@@ -93,15 +121,7 @@ namespace TodoList.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TodoList.Models.Projet", "projet")
-                        .WithMany()
-                        .HasForeignKey("ProjetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Categorie");
-
-                    b.Navigation("projet");
                 });
 
             modelBuilder.Entity("TodoList.Models.Categorie", b =>
