@@ -1,6 +1,6 @@
 ﻿@model List<TodoList.Models.Categorie>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Tache Page";
 }
 
 <div class="container">
@@ -14,7 +14,7 @@
                 <div class="list-group">
                     @foreach (Tache tache in categorie.Taches)
                     {
-                        <a asp-controller="Tache" asp-action="Edit" asp-route-id="@tache.Id" class="list-group-item list-group-item-action" aria-current="true">
+                        <a asp-controller="Tache" asp-action="Edit" asp-route-id="@tache.Id" class="list-group-item list-group-item-action text-dark bg-info" aria-current="true">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">@tache.Name</h5>
                                 <small>@tache.DateDebut.Day\@tache.DateDebut.Month => @tache.DateCible.Day\@tache.DateCible.Month</small>

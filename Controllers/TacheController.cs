@@ -82,6 +82,19 @@ namespace TodoList.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult Delete(int id)
+        {
+            Tache tache = _context.Taches.First( tache => tache.Id == id);
+            return View(tache);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Tache tache)
+        {
+            _context.Taches.Remove(tache);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
         private void SetCategoriesList()
         {
             ViewBag.CategoriesList = _context.Categories.ToList();

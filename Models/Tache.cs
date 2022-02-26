@@ -19,6 +19,7 @@ namespace TodoList.Models
         public int CategorieId { get; set; }
         public DateTime DateDebut { get; set; }
         public DateTime DateCible { get; set; }
+        public DateTime? DateCloture { get; set; }
         public bool Archivée { get; set; }
         public virtual Categorie? Categorie { get; set; }
         public virtual List<Badge>? Badges { get; set; }

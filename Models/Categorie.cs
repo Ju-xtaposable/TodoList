@@ -13,6 +13,7 @@ namespace TodoList.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Numero { get; set; }
         public int MaxTaches { get; set; }
         public virtual List<Tache>? Taches { get; set; }
     }
