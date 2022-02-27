@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TodoList.Models;
 
@@ -24,6 +25,14 @@ namespace TodoList.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEvents([FromQuery] DateTime start, [FromQuery] DateTime end)
+        {
+            return await _context.Events
+                .Where(e => !((e.DateFin <= start) || (e.DateDebut >= end)))
+                .ToListAsync();
         }
 
         public IActionResult Create()
