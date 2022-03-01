@@ -30,6 +30,15 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "apiEvent",
+    pattern: "api/events",
+    defaults: new
+    {
+        controller = "Event",
+        action = "GetEvents"
+    });
+
+app.MapControllerRoute(
     name: "taches",
     pattern: "Mes-Taches",
     defaults: new
