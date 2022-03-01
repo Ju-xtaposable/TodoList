@@ -30,10 +30,9 @@ namespace TodoList.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
-            var result =  await _context.Events
+            return await _context.Events
                 .Where(e => !((e.Start <= start) || (e.End >= end)))
                 .ToListAsync();
-            return result;
         }
 
         public IActionResult Create()
