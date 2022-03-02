@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using TodoList.DataLayers;
 using TodoList.Models;
@@ -11,6 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultContext
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<DefaultContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddTransient<CategorieDataLayer, CategorieDataLayer>();
+
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 

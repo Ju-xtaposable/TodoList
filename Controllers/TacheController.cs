@@ -70,7 +70,9 @@ namespace TodoList.Controllers
         [HttpPost]
         public IActionResult Edit(Tache tache, int[] badges)
         {
+            tache = _context.Taches.Include( tache => tache.Badges ).First( t => t.Id == tache.Id);
             tache.Badges.Clear();
+
             foreach (int badgeId in badges)
             {
                 Badge badge = _context.Badges.First( badge => badge.Id == badgeId);
@@ -95,6 +97,7 @@ namespace TodoList.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
         private void SetCategoriesList()
         {
             ViewBag.CategoriesList = _context.Categories.ToList();
