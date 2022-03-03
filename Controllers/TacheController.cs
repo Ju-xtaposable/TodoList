@@ -84,6 +84,13 @@ namespace TodoList.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public JsonResult GetBadges(int TacheId, int index)
+        {
+            Tache tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == TacheId );
+            Badge badge = tache.Badges[index];
+            return Json(badge.Name); 
+        }
+
         public IActionResult Delete(int id)
         {
             Tache tache = _context.Taches.First( tache => tache.Id == id);

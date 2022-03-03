@@ -42,7 +42,6 @@
                     </div>
                     @foreach (Badge badge in @Model.Badges)
                     {
-
                         <div class="input-group-append">
                             <select class="badgesSelector"asp-items="BadgesListItems" name="badges[]"></select>
                             <button class="btn btn-outline-danger remove_field" type="button">Supprimer</button>
@@ -74,17 +73,24 @@
 
 @section scripts {
     <script type="text/javascript">
-        var test = "@Html.Raw(Model.Badges[1].Name)";
-
-        var test2 = "@Html.Raw(Model.Badges.Select(x => x.Name))"
-        alert(test2);
-
+        var count = @Model.Badges.Count();
+        var badgesString = '@String.Concat(Model.Badges.Select( b => b.Id + ";" ))';
+        const badges = badgesString.split(";");
         const selectors = document.getElementsByClassName("badgesSelector");
         for (let selector in selectors)
         {
+            @* alert(selectors[selector]);
+            alert(badges[selector]); *@
             const options = selectors[selector].getElementsByTagName("option");
+            for ( let option of options )
+            {
+                let value = option.getAttribute("value");
+                if ( value == badges[selector])
+                {
+                    option.setAttribute("selected", "selected");
+                }
+            }
         }
-        
         
     </script>
 }
