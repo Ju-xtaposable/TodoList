@@ -26,7 +26,20 @@ $(document).ready(function() {
 
 });
 
-function AlertName(name)
+function UpdateBadges(badgesString)
 {
-    alert('You clicked '+ name +"!");
+    const badges = badgesString.split(";");
+    const selectors = document.getElementsByClassName("badgesSelector");
+    for (let selector in selectors)
+    {
+        const options = selectors[selector].getElementsByTagName("option");
+        for ( let option of options )
+        {
+            let value = option.getAttribute("value");
+            if ( value == badges[selector])
+            {
+                option.setAttribute("selected", "selected");
+            }
+        }
+    }
 }

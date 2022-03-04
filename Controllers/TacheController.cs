@@ -70,18 +70,20 @@ namespace TodoList.Controllers
         [HttpPost]
         public IActionResult Edit(Tache tache, int[] badges)
         {
-            tache = _context.Taches.Include( tache => tache.Badges ).First( t => t.Id == tache.Id);
-            tache.Badges.Clear();
+            Tache tacheToUpdate = _context.Taches.Include( tache => tache.Badges ).Include( tache => tache.Categorie ).First( t => t.Id == tache.Id);
+            tacheToUpdate.Badges.Clear();
 
             foreach (int badgeId in badges)
             {
                 Badge badge = _context.Badges.First( badge => badge.Id == badgeId);
-                tache.Badges.Add(badge);
+                tacheToUpdate.Badges.Add(badge);
             }
 
-            _context.Taches.Update(tache);
+            tacheToUpdate.CategorieId = tache.CategorieId;
+
+            _context.Taches.Update(tacheToUpdate);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Tache");
         }
 
         public JsonResult GetBadges(int TacheId, int index)
