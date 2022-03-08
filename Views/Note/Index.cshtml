@@ -1,0 +1,23 @@
+@model List<Note>
+@{
+    ViewData["Title"] = "Note Page";
+}
+
+<a class="btn btn-primary" asp-controller="Note" asp-action="Create">Nouvelles Note</a>
+@foreach (Note note in Model)
+{
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">@note.Titre</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@note.Date</h6>
+            <p class="card-text">@note.Description</p>
+            <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="card-link">Edit</a>
+            <a asp-controller="Event" asp-action="FromNote" asp-route-id="@note.Id" class="card-link">Créer un event</a>
+            <a href="#" class="card-link">Delete</a>
+        </div>
+        @foreach (Badge badge in note.Badges)
+        {
+            <span class="badge bg-primary rounded-pill">@badge.Name</span>
+        }
+    </div>
+}

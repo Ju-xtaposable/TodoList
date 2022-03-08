@@ -53,7 +53,7 @@ namespace TodoList.Controllers
             {
                 _context.Taches.Add(tache);
                 _context.SaveChanges();
-                result = RedirectToAction("Index", "Home");
+                result = RedirectToAction("Index");
             }
             return result;
         }
@@ -86,12 +86,12 @@ namespace TodoList.Controllers
             return RedirectToAction("Index", "Tache");
         }
 
-        public JsonResult GetBadges(int TacheId, int index)
-        {
-            Tache tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == TacheId );
-            Badge badge = tache.Badges[index];
-            return Json(badge.Name); 
-        }
+        // public JsonResult GetBadges(int TacheId, int index)
+        // {
+        //     Tache tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == TacheId );
+        //     Badge badge = tache.Badges[index];
+        //     return Json(badge.Name); 
+        // }
 
         public IActionResult Delete(int id)
         {

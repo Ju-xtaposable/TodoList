@@ -35,10 +35,10 @@ namespace TodoList.Controllers
                 .ToListAsync();
         }
 
-        public IActionResult Create()
+        public IActionResult Create(Event e)
         {
             SetBadgessList();
-            return View();
+            return View(e);
         }
 
         [HttpPost]
@@ -59,6 +59,22 @@ namespace TodoList.Controllers
                 result = RedirectToAction("Index", "Home");
             }
             return result;
+        }
+
+        public IActionResult FromTache(int id)
+        {
+            Tache tache = null;
+            tache = _context.Taches.Include( tache => tache.Badges).First( tache => tache.Id == id);
+            Event e = new Event() { Text=tache.Name, Description=tache.Description, Badges=tache.Badges};
+            return RedirectToAction("Create", e);
+        }
+
+        public IActionResult FromNote(int id)
+        {
+            Note note = null;
+            note = _context.Notes.Include( note => note.Badges).First( note => note.Id == id);
+            Event e = new Event() { Text=note.Titre, Description=note.Description, Badges=note.Badges};
+            return RedirectToAction("Create", e);
         }
 
         private void SetBadgessList()
