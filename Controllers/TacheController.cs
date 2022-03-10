@@ -37,7 +37,7 @@ namespace TodoList.Controllers
             .Include( t => t.Categorie )
             .Include( t => t.Badges )
             .Where( t => t.Badges.Contains(filter))
-            .Where( t => t.DateDebut <= DateTime.Now )
+            // .Where( t => t.DateDebut <= DateTime.Now )
             .OrderBy( t => t.DateCible)
             .ToList();
 

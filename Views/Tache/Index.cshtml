@@ -29,6 +29,7 @@
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">@tache.Name</h5>
                                 <small>@tache.DateCible.ToShortDateString()</small>
+                                <small hidden="hidden">@tache.DateDebut.ToShortDateString()</small>
                             </div>
                             @foreach (Badge badge in tache.Badges)
                             {
@@ -47,8 +48,10 @@
         const taches = document.getElementsByClassName("list-group-item");
         for ( let tache of taches )
         {
-            const dateString = tache.getElementsByTagName("small")[0].innerHTML;
-            const date = new Date(dateString.split('/')[2], dateString.split('/')[1]-1, dateString.split('/')[0])
+            const dateCibleString = tache.getElementsByTagName("small")[0].innerHTML;
+            const dateDebutString = tache.getElementsByTagName("small")[1].innerHTML;
+            const dateCible = new Date(dateCibleString.split('/')[2], dateCibleString.split('/')[1]-1, dateCibleString.split('/')[0])
+            const dateDebut = new Date(dateDebutString.split('/')[2], dateDebutString.split('/')[1]-1, dateDebutString.split('/')[0])
             const dateNow = new Date(Date.now());
 
             var curr = new Date;
@@ -57,17 +60,22 @@
             var last = first + 6;
             var lastday = new Date(curr.setDate(last));
             
-            if ( dateNow > date )
+            if ( dateNow < dateDebut )
+            {
+                tache.classList.remove("bg-info");
+                tache.classList.add("bg-secondary");
+            }
+            else if ( dateNow > dateCible )
             {
                 tache.classList.remove("bg-info");
                 tache.classList.add("bg-danger");
             }
-            else if ( date < lastday )
+            else if ( dateCible < lastday )
             {
                 tache.classList.remove("bg-info");
                 tache.classList.add("bg-warning");
             }
-            else if ( date.getMonth() != dateNow.getMonth() )
+            else if ( dateCible.getMonth() != dateNow.getMonth() )
             {
                 tache.classList.remove("bg-info");
                 tache.classList.add("bg-success");
