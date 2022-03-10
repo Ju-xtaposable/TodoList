@@ -1,23 +1,34 @@
-﻿@model List<TodoList.Models.Categorie>
+﻿@model List<IGrouping<Categorie, Tache>>
 @{
     ViewData["Title"] = "Tache Page";
+
+    List<Badge> BadgesList = null;
+    BadgesList = ViewBag.badgesList;
+    var BadgesListItems = BadgesList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
 }
 
 <div class="container">
     <a class="btn btn-primary" asp-controller="Tache" asp-action="Create">Nouvelles Tache</a>
+    <form asp-controller="Tache" asp-action="Index">
+        <p>
+            <select asp-items="BadgesListItems" name="badge"></select>
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+    
     <div class="row">
-        @foreach (Categorie categorie in Model)
+        @foreach (IGrouping<Categorie, Tache> group in Model)
         {
             <div class="col">
-                <h2>@categorie.Name</h2>
-                <p>@categorie.Taches.Count/@categorie.MaxTaches</p>
+                <h2>@group.Key.Name</h2>
+                <p>@group.Key.Taches.Count/@group.Key.MaxTaches</p>
                 <div class="list-group">
-                    @foreach (Tache tache in categorie.Taches)
+                    @foreach (Tache tache in group)
                     {
                         <a asp-controller="Tache" asp-action="Edit" asp-route-id="@tache.Id" class="list-group-item list-group-item-action text-dark bg-info" aria-current="true">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">@tache.Name</h5>
-                                <small>@tache.DateDebut.Day\@tache.DateDebut.Month => @tache.DateCible.Day\@tache.DateCible.Month</small>
+                                <small>@tache.DateCible.ToShortDateString()</small>
                             </div>
                             @foreach (Badge badge in tache.Badges)
                             {
@@ -30,3 +41,37 @@
         }
     </div>
 </div>
+
+@section scripts {
+    <script type="text/javascript">
+        const taches = document.getElementsByClassName("list-group-item");
+        for ( let tache of taches )
+        {
+            const dateString = tache.getElementsByTagName("small")[0].innerHTML;
+            const date = new Date(dateString.split('/')[2], dateString.split('/')[1]-1, dateString.split('/')[0])
+            const dateNow = new Date(Date.now());
+
+            var curr = new Date;
+            var first = curr.getDate() - curr.getDay() + 1;
+            var firstday = new Date(curr.setDate(first));
+            var last = first + 6;
+            var lastday = new Date(curr.setDate(last));
+            
+            if ( dateNow > date )
+            {
+                tache.classList.remove("bg-info");
+                tache.classList.add("bg-danger");
+            }
+            else if ( date < lastday )
+            {
+                tache.classList.remove("bg-info");
+                tache.classList.add("bg-warning");
+            }
+            else if ( date.getMonth() != dateNow.getMonth() )
+            {
+                tache.classList.remove("bg-info");
+                tache.classList.add("bg-success");
+            }
+        }
+    </script>
+}

@@ -13,6 +13,60 @@
 <script>
 
     const dp = new DayPilot.Month("dp");
+
+
+    dp.onTimeRangeSelected = async args => {
+        const modal = await DayPilot.Modal.prompt("Create a new event:", "Event");
+        
+        const dp = args.control;
+        dp.clearSelection();
+        if (modal.canceled) {
+            return;
+        }
+        const params = {
+            start: args.start,
+            end: args.end,
+            text: modal.result,
+            resource: args.resource
+        };
+        const { data: result } = await DayPilot.Http.post("/api/events/Post", params);
+        dp.events.add(result);
+        dp.message("Event created");
+    
+    };
+
+    dp.onBeforeEventRender = args => {
+        args.data.areas = [
+            {
+                top: 6,
+                right: 4,
+                width: 16,
+                height: 16,
+                symbol: "icons/daypilot.svg#minichevron-down-4",
+                fontColor: "#999",
+                visibility: "Hover",
+                action: "ContextMenu",
+                style: "background-color: #f9f9f9; border: 1px solid #ccc; cursor:pointer;"
+            }
+        ];
+    };
+
+    dp.contextMenu = new DayPilot.Menu({
+        items: [
+            {
+                text: "Delete",
+                onClick: async args => {
+                    const e = args.source;
+                    const id = e.id();
+                    await DayPilot.Http.delete('/api/events/Delete/${id}');
+                    dp.events.remove(e);
+                    dp.message("Event deleted");                            
+                }
+            }
+        ]
+    });
+
+
     dp.init();
     dp.events.load("/api/Events");
     

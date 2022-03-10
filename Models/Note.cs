@@ -15,6 +15,6 @@ namespace TodoList.Models
         public string Titre { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public List<Badge> Badges { get; set; }
+        public List<Badge>? Badges { get; set; }
     }
 }

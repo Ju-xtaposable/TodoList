@@ -11,19 +11,16 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly DefaultContext _context = null;
-    private readonly CategorieDataLayer _categorieDataLayer = null;
 
-    public HomeController(ILogger<HomeController> logger, DefaultContext context, CategorieDataLayer categorieDataLayer)
+    public HomeController(ILogger<HomeController> logger, DefaultContext context)
     {
         _logger = logger;
         _context = context;
-        _categorieDataLayer = categorieDataLayer;
     }
 
     public IActionResult Index()
     {
-        List<Categorie> categories = _categorieDataLayer.GetCategories();
-        return View(categories);
+        return View();
     }
 
     public IActionResult Privacy()

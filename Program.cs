@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DefaultContext");
 builder.Services.AddEntityFrameworkSqlite().AddDbContext<DefaultContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddTransient<CategorieDataLayer, CategorieDataLayer>();
+// builder.Services.AddTransient<CategorieDataLayer, CategorieDataLayer>();
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
@@ -39,6 +39,24 @@ app.MapControllerRoute(
     {
         controller = "Event",
         action = "GetEvents"
+    });
+
+app.MapControllerRoute(
+    name: "apiPostEvent",
+    pattern: "api/events/Post",
+    defaults: new
+    {
+        controller = "Event",
+        action = "PostEvent"
+    });
+
+app.MapControllerRoute(
+    name: "apiDeleteEvent",
+    pattern: "api/events/Delete/{id}",
+    defaults: new
+    {
+        controller = "Event",
+        action = "DeleteEvent"
     });
 
 app.MapControllerRoute(

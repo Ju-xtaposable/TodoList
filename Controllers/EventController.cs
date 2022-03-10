@@ -10,7 +10,8 @@ using TodoList.Models;
 
 namespace TodoList.Controllers
 {
-    //[Route("[controller]")]
+    // [Produces("application/json")]
+    // [Route("api/Events")]
     public class EventController : Controller
     {
         private readonly ILogger<EventController> _logger;
@@ -33,6 +34,40 @@ namespace TodoList.Controllers
             return await _context.Events
                 .Where(e => !((e.Start <= start) || (e.End >= end)))
                 .ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostEvent([FromBody] Event @event)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Events.Add(@event);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEvent([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var @event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
+            if (@event == null)
+            {
+                return NotFound();
+            }
+
+            _context.Events.Remove(@event);
+            await _context.SaveChangesAsync();
+
+            return Ok(@event);
         }
 
         public IActionResult Create(Event e)

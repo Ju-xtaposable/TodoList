@@ -16,19 +16,37 @@ namespace TodoList.Controllers
     {
         private readonly ILogger<TacheController> _logger;
         private readonly DefaultContext _context = null;
-        private readonly CategorieDataLayer _categorieDataLayer = null;
 
-        public TacheController(ILogger<TacheController> logger, DefaultContext context, CategorieDataLayer categorieDataLayer)
+
+        public TacheController(ILogger<TacheController> logger, DefaultContext context)
         {
             _logger = logger;
             _context = context;
-            _categorieDataLayer = categorieDataLayer;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int badge)
         {
-            List<Categorie> categories = _categorieDataLayer.GetCategories();
-            return View(categories);
+            SetBadgessList();
+            Badge filter = _context.Badges.FirstOrDefault( b => b.Id == badge);
+            if ( filter == null )
+            {
+                filter = _context.Badges.First( b => b.Numero == 1);
+            }
+
+            List<Tache> taches = _context.Taches
+            .Include( t => t.Categorie )
+            .Include( t => t.Badges )
+            .Where( t => t.Badges.Contains(filter))
+            .Where( t => t.DateDebut <= DateTime.Now )
+            .OrderBy( t => t.DateCible)
+            .ToList();
+
+            List<IGrouping<Categorie, Tache>> tachesGrouped = taches
+            .GroupBy( t => t.Categorie )
+            .OrderBy( g => g.Key.Numero)
+            .ToList();
+
+            return View(tachesGrouped);
         }
 
         public IActionResult Create()
@@ -85,13 +103,6 @@ namespace TodoList.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Tache");
         }
-
-        // public JsonResult GetBadges(int TacheId, int index)
-        // {
-        //     Tache tache = _context.Taches.Include( tache => tache.Badges ).First( tache => tache.Id == TacheId );
-        //     Badge badge = tache.Badges[index];
-        //     return Json(badge.Name); 
-        // }
 
         public IActionResult Delete(int id)
         {

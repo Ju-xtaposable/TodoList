@@ -22,9 +22,18 @@ namespace TodoList.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int badge)
         {
-            List<Note> notes = _context.Notes.Include( note => note.Badges ).ToList();
+            SetBadgessList();
+            Badge filter = _context.Badges.FirstOrDefault( b => b.Id == badge);
+            if ( filter == null )
+            {
+                filter = _context.Badges.First( b => b.Numero == 1);
+            }
+            List<Note> notes = _context.Notes
+            .Include( note => note.Badges )
+            .Where( t => t.Badges.Contains(filter))
+            .ToList();
             return View(notes);
         }
 
@@ -74,6 +83,8 @@ namespace TodoList.Controllers
                 Badge badge = _context.Badges.First( badge => badge.Id == badgeId);
                 noteToUpdate.Badges.Add(badge);
             }
+
+            noteToUpdate.Description = note.Description;
 
             _context.Notes.Update(noteToUpdate);
             _context.SaveChanges();

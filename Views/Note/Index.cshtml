@@ -1,9 +1,19 @@
 @model List<Note>
 @{
     ViewData["Title"] = "Note Page";
+
+    List<Badge> BadgesList = null;
+    BadgesList = ViewBag.badgesList;
+    var BadgesListItems = BadgesList.Select(item => new SelectListItem() { Text = item.Name, Value = item.Id.ToString() }).ToList();
 }
 
 <a class="btn btn-primary" asp-controller="Note" asp-action="Create">Nouvelles Note</a>
+<form asp-controller="Note" asp-action="Index">
+    <p>
+        <select asp-items="BadgesListItems" name="badge"></select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 @foreach (Note note in Model)
 {
     <div class="card" style="width: 18rem;">
